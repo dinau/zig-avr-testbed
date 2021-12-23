@@ -1,25 +1,20 @@
+## Changed from original source
+This repo referenced from original source https://github.com/nmichaels/zig-avr-testbed
+and modifed some code for my Zig learning.
+Original repo is very impressive, thank you sharing informaiton about Zig and AVR.
+
 # Zig on AVR
 
 This repo gets a trivial Zig program (blink an LED) working on an
 Arduino Uno (atmega328p). There is much hackery.
 
 ## Prerequisites
-
 This was built using:
+ * Zig-0.9.0 at this moment
+ * avr-gcc : Any version is probably ok
+ * avrdude : Using attatched in Arduino IDE
 
- * Zig master some time between 0.6.0 and 0.7.0
- * avr-libc 1:.0.0.+Atmel3.6.1-2
- * binutils-avr 2.26.20160125+Atmel3.6.2-1+b1
- * gcc-avr 1:5.4.0+Atmel3.6.1-2+b1
- * avrdude 6.3-20171130+svn1429-2+b1
-
-Those are Debian's names for the packages. Other distros may use
-different names.
-
-## simple.c
-
-Before trying to get Zig to work, I had to make sure I had a working C
-toolchain. This program builds and runs just fine.
+My environment is Windows10 32bit.
 
 ## blinker.c
 
@@ -31,22 +26,29 @@ actual symbol the compiler provides; flip it manually.
 
 This program is a bit more complicated, since it's got a version that
 uses an ISR. The Zig version does not know about interrupts.
+* Note: No change same as original
 
 ## atmega328p.zig
 
 A place to put constants and functions that would otherwise live in
 avr/io.h and avr/interrupt.h. Zig's translate-c got too confused on
 the actual AVR headers, so here we are.
+* Note: Added UART registers.
 
 ## blink.zig
 
 A tiny Zig program to blink an LED using a delay loop.
+* Note: No change same as original except just adapted zig-0.9.0
 
 ## intblink.zig
 
 A Zig version of the ISR version of blinker.c. Same as blink.zig, but
 with an interrupt. Weird fact: llvm emits an `sei` instruction at the
 start of the ISR.
+* Note: Changed from original,
+    1. Added UART output code, putc(),puts()
+    1. Using std.fmt.bufPrint() output code 
+    1. Adapted zig-0.9.0
 
 ## Makefile
 
@@ -62,3 +64,5 @@ Zig path doesn't do it.
 It also includes the `%.dmp` target, which is essential for knowing
 whether the other steps are working correctly, and debugging them when
 they're not.
+* Note: Changed from original,
+    1. It's just simplyfied build step according to my purpose.
